@@ -1,30 +1,30 @@
 Simple Pong game made with HTML5 Canvas ([Try online !](https://html5-pong.now.sh))
 =====================
 
-## Setup
+# Setup
 ```bash
 git clone https://github.com/XavierLeTohic/pong-game
 npm install
 ```
 
-# Run in development
+## Run in development
 ```bash
 npm run dev
 ```
 
-# Run in production
+## Run in production
 ```bash
 npm run build && npm run start
 ```
 
-## Features
-[*] Insctruction page
-[*] Ball animation
-[*] Control the paddles when mouse over the canvas
-[*] Ball collisions with paddles
-[*] Ball reset when user win or lose
-[*] Pause game when resize page
-[] Display scores
-[] Comments
+# Features
+- [x] Insctruction page
+- [x] Ball animation
+- [x] Control the paddles when mouse over the canvas
+- [x] Ball collisions with paddles
+- [x] Ball reset when user win or lose
+- [x] Pause game when resize page
+- [ ] Display scores
+- [ ] Comments
 
-[] Another version with an AI
+- [ ] Another version with an AI
