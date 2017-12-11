@@ -12,12 +12,13 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <style>{`
-            body { 
-                margin: 0 
-            }
-          `}</style>
-          <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" />
+            <title>HTML5 Canvas pong game - Xavier Le Tohic</title>
+            <style>{`
+                body { 
+                    margin: 0 
+                }
+            `}</style>
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" />
         </Head>
         <body className="custom_class">
           {this.props.customValue}

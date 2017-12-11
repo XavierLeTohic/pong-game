@@ -1,3 +1,5 @@
+// This code must be commented but it's 00:22 and this project is work in progress ;)
+
 var canvas,
     canvasContext,
     pause = true,
