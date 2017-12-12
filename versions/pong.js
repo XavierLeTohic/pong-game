@@ -2,14 +2,20 @@
 
 var canvas,
     canvasContext,
+    started = false,
     pause = true,
     framesPerSecond = 30,
+
     ballX = 50,
     ballSpeedX = 10,
     ballY = 50,
     ballSpeedY = 4,
+
     leftPaddleY = 250,
-    rightPaddleY = 50;
+    rightPaddleY = 50,
+
+    playerScore = 0,
+    iaScore = 0;
 
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
@@ -50,11 +56,7 @@ export default function(canvasElm) {
         if(!pause) {
             var mousePos = calculateMousePosition(evt)
 
-            if(mousePos.x < (canvas.width / 2)) {
-                leftPaddleY = mousePos.y - (PADDLE_HEIGHT / 2)
-            } else {
-                rightPaddleY = mousePos.y - (PADDLE_HEIGHT / 2)
-            }
+            leftPaddleY = mousePos.y - (PADDLE_HEIGHT / 2)
         }
     })
 
@@ -73,14 +75,27 @@ function resetBall() {
     ballY = canvas.height/2
 }
 
+function AI() {
+    var rightPaddleCenter = rightPaddleY + (PADDLE_HEIGHT/2) 
+    if(rightPaddleCenter < ballY-35) {
+        rightPaddleY += 6
+    } else if(rightPaddleCenter > ballY+35) {
+        rightPaddleY -= 6
+    }
+}
+
 function move() {
-    ballX = ballX + ballSpeedX;
-    ballY = ballY + ballSpeedY;
+
+    AI()
+
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
 
     if (ballX < 0) {
         if(ballY > leftPaddleY && ballY < leftPaddleY + PADDLE_HEIGHT) {
             ballSpeedX = -ballSpeedX
         } else {
+            iaScore += 1;
             resetBall()
         }
 
@@ -89,6 +104,7 @@ function move() {
         if(ballY > rightPaddleY && ballY < rightPaddleY + PADDLE_HEIGHT) {
             ballSpeedX = -ballSpeedX
         } else {
+            playerScore += 1;
             resetBall()
         }
     }
@@ -107,6 +123,11 @@ function draw() {
     drawRect(0, leftPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawRect(canvas.width - PADDLE_THICKNESS, rightPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawCircle(ballX, ballY, 10, "white")
+    
+    if(started) {
+        drawText("Score", (canvas.width/2) - 30, 50, 22)
+        drawText(`${playerScore} - ${iaScore}`, (canvas.width/2) - 25, 75, 22)
+    }
 }
 
 function drawRect(leftX, topY, w, h, color) {
@@ -131,14 +152,6 @@ function instructions() {
 
     draw()
     drawText("Pong", (canvas.width/2) - 55, canvas.height / 4, 35)
-    drawText("Without AI", (canvas.width/2) - 55, canvas.height / 3.3, 18)
-
-    drawText("Mouse over here", (canvas.width / 4) - 70, canvas.height / 2.5, 18)
-    drawText("to control left paddle", (canvas.width / 4 ) - 70, canvas.height / 2.3, 18)
-
-    drawText("Mouse over here", (canvas.width / 2) + 105, canvas.height / 2.5, 18)
-    drawText("to control right paddle", (canvas.width / 2 ) + 70, canvas.height / 2.3, 18)
-
     drawText("Click to start", (canvas.width/2) - 70, canvas.height / 1.5, 22)
 }
 
@@ -152,6 +165,9 @@ function stop() {
 }
 
 function play() {
+    if(!started) {
+        started = true;
+    }
     if(pause) {
         pause = false;
     }
