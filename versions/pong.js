@@ -4,10 +4,11 @@ var canvas,
     canvasContext,
     started = false,
     pause = true,
+    end = false,
     framesPerSecond = 30,
 
     ballX = 50,
-    ballSpeedX = 10,
+    ballSpeedX = -10,
     ballY = 50,
     ballSpeedY = 4,
 
@@ -15,7 +16,8 @@ var canvas,
     rightPaddleY = 50,
 
     playerScore = 0,
-    iaScore = 0;
+    iaScore = 0,
+    maxScore = 3;
 
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
@@ -37,15 +39,15 @@ export default function(canvasElm) {
     canvas = canvasElm
     canvasContext = canvas.getContext('2d')
 
-    ballX = (canvas.width / 2) - 10;
-    ballY = (canvas.height / 2) - 10;
+    ballX = (canvas.width / 2);
+    ballY = (canvas.height / 2);
     leftPaddleY = canvas.height - PADDLE_HEIGHT - 50;
     rightPaddleY = 50;
 
     instructions()
 
     setInterval(() => {
-        if(!pause) {
+        if(!pause && !end) {
             move()
             draw()
         }
@@ -53,7 +55,7 @@ export default function(canvasElm) {
 
     canvas.addEventListener('mousemove', (evt) => {
 
-        if(!pause) {
+        if(!pause && !end) {
             var mousePos = calculateMousePosition(evt)
 
             leftPaddleY = mousePos.y - (PADDLE_HEIGHT / 2)
@@ -70,6 +72,11 @@ export default function(canvasElm) {
 }
 
 function resetBall() {
+
+    if(playerScore >= maxScore || iaScore >= maxScore) {
+        showScore()
+    }
+
     ballSpeedX = -ballSpeedX
     ballX = canvas.width/2
     ballY = canvas.height/2
@@ -86,6 +93,10 @@ function AI() {
 
 function move() {
 
+    if(end) {
+        return false
+    }
+
     AI()
 
     ballX += ballSpeedX;
@@ -94,6 +105,9 @@ function move() {
     if (ballX < 0) {
         if(ballY > leftPaddleY && ballY < leftPaddleY + PADDLE_HEIGHT) {
             ballSpeedX = -ballSpeedX
+
+            var deltaY = ballY - (leftPaddleY + PADDLE_HEIGHT / 2)
+            ballSpeedY = deltaY * 0.35
         } else {
             iaScore += 1;
             resetBall()
@@ -103,6 +117,9 @@ function move() {
     if (ballX > canvas.width) {
         if(ballY > rightPaddleY && ballY < rightPaddleY + PADDLE_HEIGHT) {
             ballSpeedX = -ballSpeedX
+
+            var deltaY = ballY - (rightPaddleY + PADDLE_HEIGHT / 2)
+            ballSpeedY = deltaY * 0.35
         } else {
             playerScore += 1;
             resetBall()
@@ -119,14 +136,20 @@ function move() {
 }
 
 function draw() {
+
+    if(end) {
+        return false
+    }
+
     drawRect(0, 0, canvas.width, canvas.height, '#5C6AC4')
     drawRect(0, leftPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawRect(canvas.width - PADDLE_THICKNESS, rightPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawCircle(ballX, ballY, 10, "white")
+    drawNet()
     
     if(started) {
-        drawText("Score", (canvas.width/2) - 30, 50, 22)
-        drawText(`${playerScore} - ${iaScore}`, (canvas.width/2) - 25, 75, 22)
+        drawText(playerScore, (canvas.width/4), 75, 29)
+        drawText(iaScore, (canvas.width/1.5) + 25, 75, 29)
     }
 }
 
@@ -143,7 +166,6 @@ function drawCircle(centerX, centerY, radius, color) {
 }
 
 function drawText(text, x, y, textSize) {
-    console.log(textSize)
     canvasContext.font = `${textSize}px Helvetica`;
     canvasContext.fillText(text, x, y);
 }
@@ -151,8 +173,8 @@ function drawText(text, x, y, textSize) {
 function instructions() {
 
     draw()
-    drawText("Pong", (canvas.width/2) - 55, canvas.height / 4, 35)
-    drawText("Click to start", (canvas.width/2) - 70, canvas.height / 1.5, 22)
+    drawText("Pong", (canvas.width/4), canvas.height / 2, 35)
+    drawText("Click to start", (canvas.width/2) + 65, canvas.height / 2, 22)
 }
 
 function stop() {
@@ -170,5 +192,41 @@ function play() {
     }
     if(pause) {
         pause = false;
+    }
+    if(end) {
+        end = false
+    }
+}
+
+function showScore() {
+
+    draw()
+
+    started = false;
+    end = true;
+    pause = true;
+    ballX = 50;
+    ballSpeedX = 10;
+    ballY = 50;
+    ballSpeedY = 4;
+    leftPaddleY = 250;
+    rightPaddleY = 50;
+
+    if(playerScore > iaScore) {
+        drawText("You win !", (canvas.width/2) - 45, canvas.height/2, 28)
+    } else {
+        drawText("You lose !", (canvas.width/2) - 45, canvas.height/2, 28)
+    }
+
+    drawText("Click to play again", (canvas.width/2) - 60, canvas.height/2 + 40, 18)
+
+    playerScore = 0;
+    iaScore = 0;
+    
+}
+
+function drawNet() {
+    for(var i = 0; i < canvas.height; i += 40) {
+        drawRect(canvas.width/2 - 1, i, 2, 20, 'white')
     }
 }
