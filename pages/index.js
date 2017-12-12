@@ -1,29 +1,7 @@
-import { Component } from 'react'
-import initGameWithoutAI from '../versions/without-ai'
-
-export default class extends Component {
-
-    componentDidMount() {
-        
-        // Client-side
-        if(typeof window !== 'undefined') {
-            initGameWithoutAI(this.canvas)
-        }
-    }
-
-    componentWillUnmount() {
-        
-    }
-
-    render() {
-        return (
-            <div className="row center-xs middle-xs" style={{ minHeight: '100vh'}}>
-                <canvas 
-                    ref={c => this.canvas = c} 
-                    height="600"
-                    width="800"
-                />
-            </div>
-        )
-    }
-}
+export default () => (
+    <div className="row center-xs middle-xs" style={{ minHeight: '100VH' }}>
+        <div>
+            <h1>Welcome !</h1>
+        </div>
+    </div>
+)
