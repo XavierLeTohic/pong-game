@@ -103,7 +103,7 @@ function move() {
 }
 
 function draw() {
-    drawRect(0, 0, canvas.width, canvas.height, 'black')
+    drawRect(0, 0, canvas.width, canvas.height, '#5C6AC4')
     drawRect(0, leftPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawRect(canvas.width - PADDLE_THICKNESS, rightPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawCircle(ballX, ballY, 10, "white")

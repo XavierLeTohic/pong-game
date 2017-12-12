@@ -13,18 +13,14 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>HTML5 Canvas pong game - Xavier Le Tohic</title>
-            <style>{`
-                body { 
-                    margin: 0 
-                }
-                ${style}
-            `}</style>
-            
             <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" />
+            <style dangerouslySetInnerHTML={{__html: style}}/>
         </Head>
-        <body className="custom_class">
-          {this.props.customValue}
+        <body>
           <Main />
           <NextScript />
         </body>
