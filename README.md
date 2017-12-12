@@ -24,7 +24,7 @@ npm run build && npm run start
 - [x] Ball collisions with paddles
 - [x] Ball reset when user win or lose
 - [x] Pause game when resize page
-- [ ] Display scores
+- [x] Implement IA
+- [x] Display scores
+- [ ] Better collisions with paddles
 - [ ] Comments
-
-- [ ] Another version with an AI

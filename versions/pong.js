@@ -99,11 +99,14 @@ function move() {
 
     AI()
 
+    var paddleWasTouched = false;
+
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    if (ballX < 0) {
+    if (ballX < 11) {
         if(ballY > leftPaddleY && ballY < leftPaddleY + PADDLE_HEIGHT) {
+            paddleWasTouched = true
             ballSpeedX = -ballSpeedX
 
             var deltaY = ballY - (leftPaddleY + PADDLE_HEIGHT / 2)
@@ -114,8 +117,9 @@ function move() {
         }
 
     }
-    if (ballX > canvas.width) {
+    if (ballX > canvas.width - 10) {
         if(ballY > rightPaddleY && ballY < rightPaddleY + PADDLE_HEIGHT) {
+            paddleWasTouched = true
             ballSpeedX = -ballSpeedX
 
             var deltaY = ballY - (rightPaddleY + PADDLE_HEIGHT / 2)
@@ -126,13 +130,15 @@ function move() {
         }
     }
 
-    if (ballY < 0) {
+    if (ballY < 0 || paddleWasTouched === true) {
         ballSpeedY = -ballSpeedY
     }
 
-    if (ballY > canvas.height) {
+    if (ballY > canvas.height || paddleWasTouched === true) {
         ballSpeedY = -ballSpeedY
     }
+
+    paddleWasTouched = false
 }
 
 function draw() {
@@ -142,8 +148,8 @@ function draw() {
     }
 
     drawRect(0, 0, canvas.width, canvas.height, '#5C6AC4')
-    drawRect(0, leftPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
-    drawRect(canvas.width - PADDLE_THICKNESS, rightPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
+    drawRect(5, leftPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
+    drawRect(canvas.width - PADDLE_THICKNESS - 5, rightPaddleY, PADDLE_THICKNESS, PADDLE_HEIGHT, "white")
     drawCircle(ballX, ballY, 10, "white")
     drawNet()
     
